@@ -6,12 +6,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #555;
+  background-color: #8cd1ff;
 }
 
 header {
   background-color: #000747;
-  color: #fff;
+  color: #ffffff;
   padding: 10px 20px;
   display: flex;
   align-items: center;
