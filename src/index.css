@@ -6,110 +6,28 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #8cd1ff;
+  background-color: #a3218752;
 }
 
-header {
+h1 {
+  text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.divUpload {
   background-color: #000747;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 3rem;
   display: flex;
+  gap: 20px;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 70%;
   box-sizing: border-box;
 }
 
-.logo img {
-  height: 100px;
-}
-
-main {
-  padding: 20px;
-  width: 100%;
-  max-width: 70%;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  height: 100vh;
-  background-color: #f9f9f9;
-}
-
-
-.upload-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.upload-form h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.upload-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.upload-form input[type="file"] {
-  display: block;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.upload-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+button {
   cursor: pointer;
-}
-
-.upload-form button:hover {
-  background-color: #555;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  nav ul {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  nav ul li {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .logo img {
-    margin-bottom: 10px;
-  }
-
-  .upload-form {
-    width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  header {
-    padding: 10px;
-  }
-
-  .upload-form {
-    padding: 10px;
-  }
-
-  .upload-form button {
-    padding: 8px;
-  }
+  font-size: 15px;
+  font-weight: bold;
 }

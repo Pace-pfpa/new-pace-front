@@ -4,7 +4,7 @@ import FileUpload from './components/FileUpload';
 const App: React.FC = () => {
   return (
     <div>
-      <h1>New Pace File Upload</h1>
+      <h1>New Pace</h1>
       <FileUpload />
     </div>
   );
