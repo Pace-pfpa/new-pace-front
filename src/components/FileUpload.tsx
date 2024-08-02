@@ -7,6 +7,11 @@ const FileUpload: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [downloadAvailable, setDownloadAvailable] = useState<boolean>(false);
 
+  const ipdev = import.meta.env.VITE_API_URL_DEV;
+  console.log(ipdev)
+  const ipprod = import.meta.env.VITE_API_URL_PROD;
+  console.log(ipprod)
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
@@ -23,7 +28,7 @@ const FileUpload: React.FC = () => {
       setDownloadAvailable(false);
 
       try {
-        const response = await axios.post('http://localhost:3000/upload', formData, {
+        const response = await axios.post(`${ipdev}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -43,7 +48,7 @@ const FileUpload: React.FC = () => {
 
   const onDownload = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/export-audiencias', {
+      const response = await axios.get(`${ipdev}/export-audiencias`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
