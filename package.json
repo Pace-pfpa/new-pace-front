@@ -20,7 +20,8 @@
     "dotenv": "^16.4.5",
     "new-pace-front": "file:",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
     "@types/node": "^22.1.0",

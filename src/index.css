@@ -31,3 +31,13 @@ button {
   font-size: 15px;
   font-weight: bold;
 }
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  margin-right: 10px;
+}
