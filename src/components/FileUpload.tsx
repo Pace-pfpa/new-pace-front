@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import Input from '@mui/material/Input';
 
 const FileUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -28,7 +30,7 @@ const FileUpload: React.FC = () => {
       setDownloadAvailable(false);
 
       try {
-        const response = await axios.post(`${ipdev}/upload`, formData, {
+        const response = await axios.post(`${ipprod}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -48,7 +50,7 @@ const FileUpload: React.FC = () => {
 
   const onDownload = async () => {
     try {
-      const response = await axios.get(`${ipdev}/export-audiencias`, {
+      const response = await axios.get(`${ipprod}/export-audiencias`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -67,16 +69,16 @@ const FileUpload: React.FC = () => {
   return (
     <div className='divUpload'>
       <h2>Upload Excel File</h2>
-      <input type="file" onChange={onFileChange} />
-      <button onClick={onFileUpload} disabled={loading}>
+      <Input type='file' onChange={onFileChange} />
+      <Button variant='contained' onClick={onFileUpload} disabled={loading}>
       {loading ? 'Uploading...' : 'Upload'}
-      </button>
+      </Button>
       {loading && <p>Extraindo...</p>}
       {message && <p>{message}</p>}
       {downloadAvailable && (
-        <button onClick={onDownload}>
+        <Button variant='outlined' onClick={onDownload}>
           Baixar Pautas
-        </button>
+        </Button>
       )}
     </div>
   );
