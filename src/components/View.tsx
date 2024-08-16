@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 
 const ipdev = import.meta.env.VITE_API_URL_DEV;
 console.log(ipdev)
@@ -11,11 +11,11 @@ interface Audiencia {
   data: string;
   hora: string;
   processo: string;
+  tipo_contest: string;
   orgao_julgador: string;
   partes: string;
-  classe: string;
-  tipo_audiencia: string;
   sala: string;
+  turno: string;
   situacao: string;
 }
 
@@ -29,17 +29,46 @@ const View: React.FC = () => {
   });
 
   const [audiencias, setAudiencias] = useState<Audiencia[]>([]);
+  const [orgaosJulgadores, setOrgaosJulgadores] = useState<string[]>([]);
+  const [salas, setSalas] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Fetch órgãos julgadores from the backend
+    const fetchOrgaosJulgadores = async () => {
+      try {
+        const response = await axios.get<string[]>(`${ipdev}/newpace/orgaos-julgadores`);
+        setOrgaosJulgadores(response.data);
+      } catch (error) {
+        console.error('Error fetching órgãos julgadores:', error);
+      }
+    };
+
+    fetchOrgaosJulgadores();
+  }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFilters({
       ...filters,
       [e.target.name]: e.target.value,
     });
+
+    if (e.target.name === 'orgao_julgador') {
+      fetchSalas(e.target.value);
+    }
+  };
+
+  const fetchSalas = async (orgao_julgador: string) => {
+    try {
+      const response = await axios.get<string[]>(`${ipdev}/newpace/salas/${encodeURIComponent(orgao_julgador)}`)
+      setSalas(response.data);
+    } catch (error) {
+      console.error('Error fetching salas:', error);
+    }
   };
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get<Audiencia[]>(`${ipdev}/audiencias-filter`, {
+      const response = await axios.get<Audiencia[]>(`${ipdev}/newpace/audiencias-filter`, {
         params: filters,
       });
       setAudiencias(response.data);
@@ -48,7 +77,7 @@ const View: React.FC = () => {
     }
   };
 
-
+  console.log(audiencias);
   return (
     <div>
       <h1>Buscar Audiências</h1>
@@ -71,11 +100,25 @@ const View: React.FC = () => {
         </label>
         <label>
           Órgão Julgador:
-          <input type="text" name="orgao_julgador" value={filters.orgao_julgador} onChange={handleChange} />
+          <select name='orgao_julgador' value={filters.orgao_julgador} onChange={handleChange}>
+            <option value="">Todos</option>
+            {orgaosJulgadores.map(orgao => (
+              <option key={orgao} value={orgao}>
+                {orgao}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Sala:
-          <input type="text" name="sala" value={filters.sala} onChange={handleChange} />
+          <select name="sala" value={filters.sala} onChange={handleChange} disabled={!filters.orgao_julgador}>
+            <option value="">Todas</option>
+            {salas.map(sala => (
+              <option key={sala} value={sala}>
+                {sala}
+              </option>
+            ))}
+          </select>
         </label>
         <button onClick={handleSearch}>Pesquisar</button>
       </div>
@@ -85,11 +128,11 @@ const View: React.FC = () => {
           <tr>
             <th>Data</th>
             <th>Hora</th>
+            <th>Turno</th>
             <th>Processo</th>
+            <th>Contestação</th>
             <th>Órgão Julgador</th>
             <th>Partes</th>
-            <th>Classe</th>
-            <th>Tipo de Audiência</th>
             <th>Sala</th>
             <th>Situação</th>
           </tr>
@@ -99,11 +142,11 @@ const View: React.FC = () => {
             <tr key={audiencia.id}>
               <td>{audiencia.data}</td>
               <td>{audiencia.hora}</td>
+              <td>{audiencia.turno}</td>
               <td>{audiencia.processo}</td>
+              <td>{audiencia.tipo_contest}</td>
               <td>{audiencia.orgao_julgador}</td>
               <td>{audiencia.partes}</td>
-              <td>{audiencia.classe}</td>
-              <td>{audiencia.tipo_audiencia}</td>
               <td>{audiencia.sala}</td>
               <td>{audiencia.situacao}</td>
             </tr>
