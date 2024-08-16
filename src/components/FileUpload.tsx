@@ -7,7 +7,7 @@ const FileUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [downloadAvailable, setDownloadAvailable] = useState<boolean>(false);
+  const [downloadAvailable, setDownloadAvailable] = useState<boolean>(true);
 
   const ipdev = import.meta.env.VITE_API_URL_DEV;
   console.log(ipdev)
