@@ -31,6 +31,8 @@ const View: React.FC = () => {
   const [audiencias, setAudiencias] = useState<Audiencia[]>([]);
   const [orgaosJulgadores, setOrgaosJulgadores] = useState<string[]>([]);
   const [salas, setSalas] = useState<string[]>([]);
+  const [cpf, setCpf] = useState('');
+  const [senha, setSenha] = useState('');
 
   useEffect(() => {
     // Fetch órgãos julgadores from the backend
@@ -77,6 +79,23 @@ const View: React.FC = () => {
     }
   };
 
+  const handleSendProcesses = async () => {
+    const processos = audiencias.map((audi) => audi.processo);
+
+    const data = {
+      cpf,
+      senha,
+      processos,
+    };
+
+    try {
+      const response = await axios.post(`${ipdev}/newpace/filtroAudienciasPace`, data);
+      console.log('Response: ', response.data);
+    } catch (error) {
+      console.error('Error sending processes:', error);
+    }
+  }
+
   console.log(audiencias);
   return (
     <div>
@@ -122,6 +141,20 @@ const View: React.FC = () => {
         </label>
         <button onClick={handleSearch}>Pesquisar</button>
       </div>
+
+      <h2>Login Sapiens</h2>
+      <div>
+        <label>
+          CPF:
+          <input type="text" value={cpf} required onChange={(e) => setCpf(e.target.value)} />
+        </label>
+        <label>
+          Senha:
+          <input type="password" value={senha} required onChange={(e) => setSenha(e.target.value)} />
+        </label>
+        <button onClick={handleSendProcesses}>Enviar Processos</button>
+      </div>
+
       <h2>Resultados</h2>
       <table>
       <thead>
