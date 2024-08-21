@@ -30,7 +30,7 @@ const FileUpload: React.FC = () => {
       setDownloadAvailable(false);
 
       try {
-        const response = await axios.post(`${ipdev}/upload`, formData, {
+        const response = await axios.post(`${ipprod}/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -50,7 +50,7 @@ const FileUpload: React.FC = () => {
 
   const onDownload = async () => {
     try {
-      const response = await axios.get(`${ipdev}/newpace/audiencias-export`, {
+      const response = await axios.get(`${ipprod}/newpace/audiencias-export`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
