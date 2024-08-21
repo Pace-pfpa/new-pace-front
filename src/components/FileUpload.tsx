@@ -50,7 +50,7 @@ const FileUpload: React.FC = () => {
 
   const onDownload = async () => {
     try {
-      const response = await axios.get(`${ipdev}/export-audiencias`, {
+      const response = await axios.get(`${ipdev}/newpace/audiencias-export`, {
         responseType: 'blob',
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

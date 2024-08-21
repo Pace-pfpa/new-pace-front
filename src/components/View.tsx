@@ -12,6 +12,7 @@ interface Audiencia {
   hora: string;
   processo: string;
   tipo_contest: string;
+  assunto: string;
   orgao_julgador: string;
   partes: string;
   sala: string;
@@ -96,6 +97,23 @@ const View: React.FC = () => {
     }
   }
 
+  const handleFindAssunto = async () => {
+    const processos = audiencias.map((audi) => audi.processo);
+
+    const data = {
+      cpf,
+      senha,
+      processos,
+    };
+
+    try {
+      const response = await axios.post(`${ipdev}/newpace/filtroAssuntoPace`, data);
+      console.log('Response: ', response.data);
+    } catch (error) {
+      console.error('Error sending processes:', error);
+    }
+  }
+
   console.log(audiencias);
   return (
     <div>
@@ -152,7 +170,8 @@ const View: React.FC = () => {
           Senha:
           <input type="password" value={senha} required onChange={(e) => setSenha(e.target.value)} />
         </label>
-        <button onClick={handleSendProcesses}>Enviar Processos</button>
+        <button onClick={handleSendProcesses}>Achar contestação</button>
+        <button onClick={handleFindAssunto}>Achar assunto</button>
       </div>
 
       <h2>Resultados</h2>
@@ -164,6 +183,7 @@ const View: React.FC = () => {
             <th>Turno</th>
             <th>Processo</th>
             <th>Contestação</th>
+            <th>Assunto</th>
             <th>Órgão Julgador</th>
             <th>Partes</th>
             <th>Sala</th>
@@ -178,6 +198,7 @@ const View: React.FC = () => {
               <td>{audiencia.turno}</td>
               <td>{audiencia.processo}</td>
               <td>{audiencia.tipo_contest}</td>
+              <td>{audiencia.assunto}</td>
               <td>{audiencia.orgao_julgador}</td>
               <td>{audiencia.partes}</td>
               <td>{audiencia.sala}</td>
