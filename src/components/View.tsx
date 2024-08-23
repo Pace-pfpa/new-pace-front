@@ -6,6 +6,9 @@ console.log(ipdev)
 const ipprod = import.meta.env.VITE_API_URL_PROD;
 console.log(ipprod)
 
+// MUDE PARA ipprod QUANDO FOR PARA A PRODUÇÃO
+const ip = ipdev;
+
 interface Audiencia {
   id: number;
   data: string;
@@ -41,7 +44,7 @@ const View: React.FC = () => {
     // Fetch órgãos julgadores from the backend
     const fetchOrgaosJulgadores = async () => {
       try {
-        const response = await axios.get<string[]>(`${ipprod}/newpace/orgaos-julgadores`);
+        const response = await axios.get<string[]>(`${ip}/newpace/orgaos-julgadores`);
         setOrgaosJulgadores(response.data);
       } catch (error) {
         console.error('Error fetching órgãos julgadores:', error);
@@ -64,7 +67,7 @@ const View: React.FC = () => {
 
   const fetchSalas = async (orgao_julgador: string) => {
     try {
-      const response = await axios.get<string[]>(`${ipprod}/newpace/salas/${encodeURIComponent(orgao_julgador)}`)
+      const response = await axios.get<string[]>(`${ip}/newpace/salas/${encodeURIComponent(orgao_julgador)}`)
       setSalas(response.data);
     } catch (error) {
       console.error('Error fetching salas:', error);
@@ -73,7 +76,7 @@ const View: React.FC = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get<Audiencia[]>(`${ipprod}/newpace/audiencias-filter`, {
+      const response = await axios.get<Audiencia[]>(`${ip}/newpace/audiencias-filter`, {
         params: filters,
       });
       setAudiencias(response.data);
@@ -94,7 +97,7 @@ const View: React.FC = () => {
     
     try {
       setLoading(true);
-      const response = await axios.post(`${ipprod}/newpace/filtroAudienciasPace`, data);
+      const response = await axios.post(`${ip}/newpace/filtroAudienciasPace`, data);
       console.log('Response: ', response.data);
       handleSearch();
     } catch (error) {
@@ -116,7 +119,7 @@ const View: React.FC = () => {
     
     try {
       setLoading2(true);
-      const response = await axios.post(`${ipprod}/newpace/filtroAssuntoPace`, data);
+      const response = await axios.post(`${ip}/newpace/filtroAssuntoPace`, data);
       console.log('Response: ', response.data);
       handleSearch();
     } catch (error) {
