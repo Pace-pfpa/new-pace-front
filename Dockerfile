@@ -1,11 +1,13 @@
 # Baseado em uma imagem leve de Node.js
-FROM node:18-alpine AS build
+FROM node:18 AS builder
 
 # Diretório de trabalho no container
 WORKDIR /app
 
 # Copiar package.json e package-lock.json
 COPY package*.json ./
+COPY tsconfig.json ./
+COPY vite.config.ts ./
 
 # Instalar dependências
 RUN npm install
@@ -16,17 +18,12 @@ COPY . .
 # Rodar o build da aplicação para produção
 RUN npm run build
 
-# ---- Segunda etapa: Servindo arquivos estáticos ----
-FROM nginx:alpine
+FROM node:18
 
 # Copiar os arquivos buildados da etapa anterior
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist ./dist
 
-# Copiar configuração customizada do NGINX (se necessário)
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expor a porta para o NGINX servir a aplicação
-EXPOSE 80
+EXPOSE 8080
 
 # Iniciar o servidor NGINX
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "run", "serve"]
