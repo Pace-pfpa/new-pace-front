@@ -7,7 +7,6 @@ const FileUpload: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [downloadAvailable, setDownloadAvailable] = useState<boolean>(true);
 
   const ipdev = import.meta.env.VITE_API_URL_DEV;
   console.log(ipdev)
@@ -15,7 +14,7 @@ const FileUpload: React.FC = () => {
   console.log(ipprod)
 
   // MUDE PARA ipprod QUANDO FOR PARA A PRODUÇÃO
-  const ip = ipdev;
+  const ip = ipprod;
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -30,7 +29,6 @@ const FileUpload: React.FC = () => {
 
       setLoading(true);
       setMessage('');
-      setDownloadAvailable(false);
 
       try {
         const response = await axios.post(`${ip}/upload`, formData, {
@@ -39,7 +37,6 @@ const FileUpload: React.FC = () => {
           },
         });
         setMessage(`File uploaded successfully: ${JSON.stringify(response.data)}`);
-        setDownloadAvailable(true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         setMessage(`Failed to upload file: ${error.response ? error.response.data.error : error.message}`);
@@ -51,24 +48,6 @@ const FileUpload: React.FC = () => {
     }
   };
 
-  const onDownload = async () => {
-    try {
-      const response = await axios.get(`${ip}/newpace/audiencias-export`, {
-        responseType: 'blob',
-      });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'audiencias.xlsx');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      setMessage(`Failed to download file: ${error.response ? error.response.data.error : error.message}`);
-    }
-  }
-
   return (
     <div className='divUpload'>
       <h2>Upload Excel File</h2>
@@ -78,11 +57,6 @@ const FileUpload: React.FC = () => {
       </Button>
       {loading && <p>Extraindo...</p>}
       {message && <p>{message}</p>}
-      {downloadAvailable && (
-        <Button variant='outlined' onClick={onDownload}>
-          Baixar Pautas
-        </Button>
-      )}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useState, ChangeEvent, useEffect } from 'react';
 
@@ -7,7 +8,7 @@ const ipprod = import.meta.env.VITE_API_URL_PROD;
 console.log(ipprod)
 
 // MUDE PARA ipprod QUANDO FOR PARA A PRODUÇÃO
-const ip = ipdev;
+const ip = ipprod;
 
 interface Audiencia {
   id: number;
@@ -39,6 +40,8 @@ const View: React.FC = () => {
   const [loading2, setLoading2] = useState<boolean>(false);
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
+  const [downloadAvailable, setDownloadAvailable] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
     // Fetch órgãos julgadores from the backend
@@ -80,6 +83,7 @@ const View: React.FC = () => {
         params: filters,
       });
       setAudiencias(response.data);
+      setDownloadAvailable(true);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -129,6 +133,26 @@ const View: React.FC = () => {
     }
   }
 
+  const onDownload = async () => {
+
+    try {
+      const response = await axios.get(`${ip}/newpace/audiencias-export`, {
+        params: filters,
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'audiencias.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setMessage(`Failed to download file: ${error.response ? error.response.data.error : error.message}`);
+    }
+  }
+
   console.log(audiencias);
   return (
     <div>
@@ -173,6 +197,13 @@ const View: React.FC = () => {
           </select>
         </label>
         <button onClick={handleSearch}>Pesquisar</button>
+        <br/>
+        {message && <p>{message}</p>}
+        {downloadAvailable && (
+        <Button variant='contained' onClick={onDownload}>
+          Baixar Pautas
+        </Button>
+      )}
       </div>
 
       <h2>Login Sapiens</h2>
