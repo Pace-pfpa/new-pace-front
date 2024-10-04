@@ -5,8 +5,8 @@ const Navbar: React.FC = () => {
   return (
     <nav>
       <ul>
-        <li><Link to="/">Upload</Link></li>
-        <li><Link to="/view">View</Link></li>
+        <li><Link className='link-react' to="/">Upload</Link></li>
+        <li><Link className='link-react' to="/view">View</Link></li>
       </ul>
     </nav>
   );

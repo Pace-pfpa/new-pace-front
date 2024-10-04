@@ -14,7 +14,7 @@ const FileUpload: React.FC = () => {
   console.log(ipprod)
 
   // MUDE PARA ipprod QUANDO FOR PARA A PRODUÇÃO
-  const ip = ipprod;
+  const ip = ipdev;
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {

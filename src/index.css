@@ -40,4 +40,12 @@ nav ul {
 nav li {
   display: inline;
   margin-right: 10px;
+  background-color: #0013be;
+  padding: 12px;
+  height: 100%;
+}
+
+.link-react {
+  color: #ffffff;
+  text-decoration: none; 
 }
