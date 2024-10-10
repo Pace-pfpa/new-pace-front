@@ -1,4 +1,5 @@
-import { Autocomplete, Button, TextField } from '@mui/material';
+import { Autocomplete, Button, TextField, AutocompleteChangeReason,
+  AutocompleteChangeDetails } from '@mui/material';
 import axios from 'axios';
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import styles from '../styles/view.module.css';
@@ -9,7 +10,7 @@ const ipprod = import.meta.env.VITE_API_URL_PROD;
 console.log(ipprod)
 
 // MUDE PARA ipprod QUANDO FOR PARA A PRODUÇÃO
-const ip = ipdev;
+const ip = ipprod;
 
 interface Audiencia {
   id: number;
@@ -70,7 +71,12 @@ const View: React.FC = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleOrgaoJulgadorChange = (event: any, value: string | null) => {
+  const handleOrgaoJulgadorChange = (
+    _event: React.SyntheticEvent<Element, Event>,
+    value: string | null,
+    _reason: AutocompleteChangeReason,
+    _details?: AutocompleteChangeDetails<string>
+  ) => {
     setFilters({
       ...filters,
       orgao_julgador: value || '',
